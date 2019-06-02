@@ -14,7 +14,7 @@ sudo yum -y install python36u-pip;
 sudo yum -y install python36u-devel;
 
 #Install venv
-sudo chmod 777 -R pp
+sudo chmod 777 -R podaripodarok.org
 sudo python3.6 -m venv myvenv;
 source myvenv/bin/activate;
 
@@ -43,6 +43,7 @@ docker-compose down
 
 #Start Django
 django-admin startproject podaripodarok .
+python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 python manage.py startapp pp_app
