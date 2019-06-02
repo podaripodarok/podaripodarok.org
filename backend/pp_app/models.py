@@ -17,7 +17,7 @@ class UserPP(models.Model):
         self.save()
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
     class Meta:
         ordering = ('user',)
@@ -32,7 +32,7 @@ class Category(models.Model):
         self.save()
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         ordering = ('name',)
