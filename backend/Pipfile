@@ -29,6 +29,8 @@ wrapt = "==1.11.1"
 Django = "==2.2.1"
 PyJWT = "==1.7.1"
 Rx = "==1.6.1"
+djangorestframework = "==3.9.4"
+django-rest-knox = "==4.1.0"
 
 [requires]
 python_version = "3.7"
