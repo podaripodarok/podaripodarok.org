@@ -38,5 +38,41 @@ class Category(models.Model):
         ordering = ('name',)
 
 
+class Family(models.Model):
+    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.userPP)
+
+    class Meta:
+        ordering = ('userPP',)
+
+         
+class Volunteer(models.Model):
+    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.userPP)
+
+    class Meta:
+        ordering = ('userPP',)        
+     
+class Giver(models.Model):
+    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.userPP)
+
+    class Meta:
+        ordering = ('userPP',)    
 
 
