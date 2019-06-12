@@ -24,6 +24,7 @@ class UserPP(models.Model):
 
 
 class Category(models.Model):
+    """ Describes different activities person can participates"""
     users = models.ManyToManyField(UserPP)
     name = models.CharField(max_length=30, blank=True, default='')
     description = models.CharField(max_length=30, blank=True, default='')
@@ -63,6 +64,7 @@ class Volunteer(models.Model):
     class Meta:
         ordering = ('userPP',)        
      
+
 class Giver(models.Model):
     userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
 
@@ -76,3 +78,33 @@ class Giver(models.Model):
         ordering = ('userPP',)    
 
 
+class SocialAccountType(models.Model):
+    """Social network name"""
+    social_account_name = models.CharField(max_length=100, blank=True, default='')
+        
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.social_account_name)
+
+    class Meta:
+        ordering = ('social_account_name',)
+
+
+class SocialAccount(models.Model):
+    """To keep social network tokens"""
+    userPP = models.ForeignKey(UserPP)
+    social_account_type_id = models.ForeignKey(SocialAccountType)
+    social_account_token = models.CharField(max_length=100, blank=True, default='')
+    
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.social_account_token)
+
+    class Meta:
+        ordering = ('social_account_token',)
