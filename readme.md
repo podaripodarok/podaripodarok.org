@@ -1,4 +1,4 @@
-# podaripodarok.org
+## podaripodarok.org
 yum update;
 
 sudo yum -y install epel-release;
