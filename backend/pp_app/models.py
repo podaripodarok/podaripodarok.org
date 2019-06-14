@@ -95,8 +95,8 @@ class SocialAccountType(models.Model):
 
 class SocialAccount(models.Model):
     """To keep social network tokens"""
-    userPP = models.ForeignKey(UserPP)
-    social_account_type_id = models.ForeignKey(SocialAccountType)
+    userPP = models.ForeignKey(UserPP, default=None, on_delete=models.SET_DEFAULT)
+    social_account_type_id = models.ForeignKey(SocialAccountType, default=None, on_delete=models.SET_DEFAULT)
     social_account_token = models.CharField(max_length=100, blank=True, default='')
     
 
