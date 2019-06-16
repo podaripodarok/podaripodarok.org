@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class UserPP(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, default=None, on_delete=models.CASCADE)
     middle_name = models.CharField(max_length=30, blank=True, default='')
     address = models.CharField(max_length=500, blank=True, default='')
     #phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
@@ -63,7 +63,7 @@ class Volunteer(models.Model):
 
     class Meta:
         ordering = ('userPP',)        
-     
+
 
 class Giver(models.Model):
     userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
@@ -80,31 +80,31 @@ class Giver(models.Model):
 
 class SocialAccountType(models.Model):
     """Social network name"""
-    social_account_name = models.CharField(max_length=100, blank=True, default='')
+    name = models.CharField(max_length=100, blank=True, default='')
         
 
     def publish(self):
         self.save()
 
     def __str__(self):
-        return str(self.social_account_name)
+        return str(self.name)
 
     class Meta:
-        ordering = ('social_account_name',)
+        ordering = ('name',)
 
 
 class SocialAccount(models.Model):
     """To keep social network tokens"""
-    userPP = models.ForeignKey(UserPP, default=None, on_delete=models.SET_DEFAULT)
-    social_account_type_id = models.ForeignKey(SocialAccountType, default=None, on_delete=models.SET_DEFAULT)
-    social_account_token = models.CharField(max_length=100, blank=True, default='')
+    userPP = models.ForeignKey(UserPP, on_delete=models.CASCADE)
+    social_account_type_id = models.ForeignKey(SocialAccountType, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100, blank=True, default='')
     
 
     def publish(self):
         self.save()
 
     def __str__(self):
-        return str(self.social_account_token)
+        return str(self.token)
 
     class Meta:
-        ordering = ('social_account_token',)
+        ordering = ('token',)
