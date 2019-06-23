@@ -51,3 +51,21 @@ echo "from django.contrib.auth.models import User; User.objects.create_superuser
 
 #Copy files to AWS
 sudo scp -r -i ~/.ssh/pp_key.pem /home/admin/Documents/projects/pp/backend/* centos@18.222.134.116:/opt/pp/backend/
+
+#GraphQL
+```
+query {
+  users{
+    id, username, email
+  }
+}
+```
+
+```
+mutation {createUser(username: "test", email: "test@test.test", password: "Aa123456!"){
+  user{
+    id, username, email
+  }
+}
+}
+```

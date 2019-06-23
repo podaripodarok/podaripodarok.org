@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'pp_app',
     'frontend',
+    'graphene_django',
 ]
 
 GRAPHENE = {

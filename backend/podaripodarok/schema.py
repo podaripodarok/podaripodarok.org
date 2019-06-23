@@ -1,16 +1,17 @@
-# import graphene
-#import graphql_jwt
-# import pp_app.schema
+import graphene
+# import graphql_jwt
+from pp_app import schema
 
 
-# class Query(pp_app.schema.query, graphene.ObjectType):
-#     pass
+class Query(schema.Query, graphene.ObjectType):
+    pass
 
 
-# class Mutation(pp_app.schema.mutation, graphene.ObjectType):
-#     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
-#     #verify_token = graphql_jwt.Verify.Field()
+class Mutation(schema.Mutation, graphene.ObjectType):
+    #token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    #verify_token = graphql_jwt.Verify.Field()
+    pass
 
 
-# schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation)
 
