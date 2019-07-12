@@ -1,16 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
 #from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
+
+class Address(models.Model):
+    user = models.OneToOneField(User, default=None, on_delete=models.CASCADE)
+    post_index = models.IntegerField(blank=True, default=None, 
+        validators=[MaxValueValidator(999999), MinValueValidator(100000)])
+    region = models.CharField(max_length=1024, blank=True, default='')
+    district = models.CharField(max_length=1024, blank=True, default='')
+    inhabited_locality = models.CharField(max_length=1024, blank=True, default='') #
+    street = models.CharField(max_length=1024, blank=True, default='')
+    building_number = models.IntegerField(blank=True, default=0)
+    building_structure = models.CharField(max_length=1024, blank=True, default='')
+    flat_number = models.IntegerField(blank=True, default=0)
+    stage = models.IntegerField(blank=True, default=0)
+    intercome_code = models.CharField(max_length=30, blank=True, default='')
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        ordering = ('inhabited_locality', 'street',)
 
 class UserPP(models.Model):
     user = models.OneToOneField(User, default=None, on_delete=models.CASCADE)
     middle_name = models.CharField(max_length=30, blank=True, default='')
-    address = models.CharField(max_length=500, blank=True, default='')
+    phone_number = models.CharField(max_length=15, blank=False)
     #phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
     #                             message="Phone number must be entered in the format: '+x xxx xxx xx xx'. Up to 15 digits allowed.")
     #phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=False)
-    phone_number = models.CharField(max_length=15, blank=False)
+    address = models.OneToOneField(Address, default=None, on_delete=models.SET_DEFAULT)
     week_show_count = models.IntegerField(blank=True, default=0)
 
     def publish(self):
@@ -36,46 +60,7 @@ class Category(models.Model):
         return str(self.name)
 
     class Meta:
-        ordering = ('name',)
-
-
-class Family(models.Model):
-    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
-
-    def publish(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.userPP)
-
-    class Meta:
-        ordering = ('userPP',)
-
-         
-class Volunteer(models.Model):
-    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
-
-    def publish(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.userPP)
-
-    class Meta:
-        ordering = ('userPP',)        
-
-
-class Giver(models.Model):
-    userPP = models.OneToOneField(UserPP, on_delete=models.CASCADE)
-
-    def publish(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.userPP)
-
-    class Meta:
-        ordering = ('userPP',)    
+        ordering = ('name',) 
 
 
 class SocialAccountType(models.Model):
@@ -108,3 +93,4 @@ class SocialAccount(models.Model):
 
     class Meta:
         ordering = ('token',)
+
