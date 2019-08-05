@@ -147,6 +147,9 @@ class Action(models.Model):
 class GifttypeChoice(Enum):   # A subclass of Enum
     SUGGESTION = "Suggestion"
     REQUEST = "Request"
+    @classmethod
+    def all(self):
+        return [GifttypeChoice.SUGGESTION, GifttypeChoice.REQUEST]
 
 
 class MeasureChoice(Enum):   # A subclass of Enum
@@ -156,7 +159,9 @@ class MeasureChoice(Enum):   # A subclass of Enum
     KILOS = "кг"
     METRES = "метр(ов)"
     HOURS = "час(ов)"
-
+    @classmethod
+    def all(self):
+        return [MeasureChoice.RUBBLES, MeasureChoice.UNITS, MeasureChoice.LITRES, MeasureChoice.KILOS, MeasureChoice.METRES, MeasureChoice.HOURS]
 
 class GiftLabel(models.Model):
     name = models.CharField(max_length=100, blank=True, default='')
@@ -171,11 +176,11 @@ class Gift(models.Model):
     description = models.CharField(max_length=100, blank=True, default='')
     gift_type = models.CharField(
       max_length=100,
-      choices=[(tag, tag.value) for tag in GifttypeChoice]  # Choices is a list of Tuple
+      choices=[(tag.name, tag.value) for tag in GifttypeChoice.all()]  # Choices is a list of Tuple
     )
     measure_type = models.CharField(
       max_length=100,
-      choices=[(tag, tag.value) for tag in MeasureChoice]  # Choices is a list of Tuple
+      choices=[(tag.name, tag.value) for tag in MeasureChoice.all()]  # Choices is a list of Tuple
     )
     value = models.IntegerField(blank=True, default=1)
     accept_gift_time = models.DateField(("Date"), auto_now=False, auto_now_add=False)
