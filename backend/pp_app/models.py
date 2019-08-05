@@ -163,16 +163,17 @@ class MeasureChoice(Enum):   # A subclass of Enum
     def all(self):
         return [MeasureChoice.RUBBLES, MeasureChoice.UNITS, MeasureChoice.LITRES, MeasureChoice.KILOS, MeasureChoice.METRES, MeasureChoice.HOURS]
 
+
 class GiftLabel(models.Model):
     name = models.CharField(max_length=100, blank=True, default='')
 
 
 class Gift(models.Model):
-    """Who participates in action"""
-    userPP = models.ManyToManyField(UserPP)
+    """"""
+    name = models.CharField(max_length=100, blank=True, default='')
+    user_created = models.ManyToManyField(UserPP)
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     gift_label = models.ManyToManyField(GiftLabel)
-    name = models.CharField(max_length=100, blank=True, default='')
     description = models.CharField(max_length=100, blank=True, default='')
     gift_type = models.CharField(
       max_length=100,
@@ -183,6 +184,7 @@ class Gift(models.Model):
       choices=[(tag.name, tag.value) for tag in MeasureChoice.all()]  # Choices is a list of Tuple
     )
     value = models.IntegerField(blank=True, default=1)
+    creation_time = models.DateField(("Date"), auto_now=True, auto_now_add=False)
     accept_gift_time = models.DateField(("Date"), auto_now=False, auto_now_add=False)
 
     def publish(self):
@@ -195,6 +197,24 @@ class Gift(models.Model):
         ordering = ('name',)
 
 
+class GiftChild(models.Model):
+    """part of gift.
+    reservation_gift_time - when user reserved a gift"""
+    gift_id = models.ForeignKey(Gift, on_delete=models.CASCADE)
+    user_reserved = models.ManyToManyField(UserPP)
+    part_value = models.IntegerField(blank=True, default=0)
+    on_store = models.BooleanField(default=True)
+    creation_time = models.DateField(("Date"), auto_now=True, auto_now_add=False)
+    reservation_gift_time = models.DateField(("Date"), auto_now=False, auto_now_add=False)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return str(self.part_value)
+
+    class Meta:
+        ordering = ('gift_id',)
 
 
 
