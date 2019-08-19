@@ -1,3 +1,5 @@
+import os
+import random
 from enum import Enum
 
 from django.contrib.auth.models import User
@@ -28,9 +30,18 @@ class Address(models.Model):
 
     class Meta:
         ordering = ('inhabited_locality', 'street',)
+#user_documents/
+
+def photo_path(instance, filename):
+    _, file_extension= os.path.splitext(filename)
+    chars= 'abcdefghijklmnopqrstuvwxyz1234567890'
+    randomstr= ''.join((random.choice(chars)) for x in range(10))
+    return 'images/userphotos/{userid}/ava_{randomstring}{ext}'.format(userid= instance.user.id, randomstring= randomstr, ext= file_extension)
+
 
 class UserPP(models.Model):
     user = models.OneToOneField(User, default=None, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to=photo_path, blank=True, null=True)
     middle_name = models.CharField(max_length=30, blank=True, default='')
     phone_number = models.CharField(max_length=15, blank=False)
     #phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
@@ -234,3 +245,21 @@ class Message(models.Model):
 
     def __str__(self):
         return str(self.text)
+
+
+class Document(models.Model):
+    userPP = models.ForeignKey(UserPP, on_delete=models.SET_NULL, null=True)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    path = models.CharField(max_length=100, blank=True, default='')
+    file_extention = models.CharField(max_length=10, blank=True, default='')
+    creationTime = models.DateField(("Date"), auto_now=True, auto_now_add=False)
+    modifyTime = models.DateField(("Date"), auto_now=True, auto_now_add=False)
+    
+    def publish(self):
+        self.save()
+
+    class Meta:
+        ordering = ('file_extention',)
+
+    def __str__(self):
+        return str(self.path)
